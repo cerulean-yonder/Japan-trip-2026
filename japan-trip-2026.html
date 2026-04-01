@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Japan Trip 2026</title>
+<style>
+  :root {
+    --sakura: #e8a0b0;
+    --deep: #1a1a2e;
+    --ink: #2c2c3e;
+    --muted: #6b6b82;
+    --bg: #fafaf8;
+    --card: #ffffff;
+    --accent: #c94060;
+    --gold: #b8860b;
+    --border: #e8e8f0;
+    --green: #2d6a4f;
+    font-size: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    padding-bottom: 3rem;
+  }
+
+  /* ── Header ── */
+  header {
+    background: var(--deep);
+    color: white;
+    padding: 2rem 1.25rem 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: "🌸";
+    font-size: 6rem;
+    opacity: 0.08;
+    position: absolute;
+    top: -1rem;
+    right: -1rem;
+    line-height: 1;
+  }
+  header h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  header .subtitle {
+    color: var(--sakura);
+    font-size: 0.95rem;
+    margin-top: 0.35rem;
+    font-weight: 500;
+  }
+
+  /* ── Nav pills ── */
+  .nav {
+    display: flex;
+    overflow-x: auto;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: var(--deep);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a {
+    flex-shrink: 0;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.15s;
+  }
+  .nav a:hover, .nav a:active {
+    background: var(--sakura);
+    border-color: var(--sakura);
+    color: var(--deep);
+  }
+
+  /* ── Main content ── */
+  main { padding: 1rem; max-width: 680px; margin: 0 auto; }
+
+  /* ── Section headers ── */
+  .section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent);
+    border-bottom: 2px solid var(--sakura);
+    padding-bottom: 0.4rem;
+    margin: 2rem 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 1.1rem 1.1rem 1rem;
+    margin-bottom: 0.85rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+
+  /* ── Flight cards ── */
+  .flight-card {
+    background: linear-gradient(135deg, #1a1a2e 0%, #2d2d4e 100%);
+    color: white;
+    border: none;
+  }
+  .flight-card .flight-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+  .flight-badge {
+    background: var(--sakura);
+    color: var(--deep);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    letter-spacing: 0.05em;
+  }
+  .flight-route {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+  .flight-route .arrow { color: var(--sakura); font-size: 1rem; }
+  .flight-detail { font-size: 0.85rem; color: rgba(255,255,255,0.75); margin-top: 0.2rem; }
+  .flight-times {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(255,255,255,0.15);
+  }
+  .flight-time-block { text-align: center; }
+  .flight-time-block .time { font-size: 1.3rem; font-weight: 700; }
+  .flight-time-block .label { font-size: 0.75rem; color: rgba(255,255,255,0.6); }
+  .flight-times .duration { align-self: center; font-size: 0.8rem; color: rgba(255,255,255,0.6); }
+
+  /* ── Summary table ── */
+  .stay-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  .stay-table th {
+    text-align: left;
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.4rem 0.5rem 0.5rem;
+    border-bottom: 2px solid var(--border);
+  }
+  .stay-table td {
+    padding: 0.55rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .stay-table tr:last-child td { border-bottom: none; font-weight: 600; color: var(--accent); }
+  .stay-table .dates { color: var(--muted); white-space: nowrap; }
+  .stay-table .nights {
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .stay-table .accom { font-size: 0.8rem; color: var(--muted); }
+
+  /* ── Day cards ── */
+  .day-card { position: relative; }
+  .day-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+  }
+  .day-date {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: white;
+    background: var(--accent);
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .day-title { font-size: 1rem; font-weight: 700; color: var(--ink); }
+
+  .day-items { list-style: none; }
+  .day-items li {
+    padding: 0.25rem 0 0.25rem 1.4rem;
+    position: relative;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    border-bottom: 1px solid var(--border);
+  }
+  .day-items li:last-child { border-bottom: none; }
+  .day-items li::before {
+    content: "·";
+    position: absolute;
+    left: 0.4rem;
+    color: var(--sakura);
+    font-size: 1.4rem;
+    line-height: 1.2;
+  }
+  .day-items li .time-tag {
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 0.85rem;
+    margin-right: 0.15rem;
+  }
+  .day-items li .note {
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: block;
+    margin-top: 0.1rem;
+  }
+
+  /* ── Callout boxes ── */
+  .callout {
+    background: #fff8f0;
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 0.65rem 0.85rem;
+    font-size: 0.85rem;
+    color: #5a4010;
+    margin-top: 0.6rem;
+  }
+  .callout strong { color: var(--gold); }
+
+  .callout-tip {
+    background: #f0fff4;
+    border-left-color: var(--green);
+    color: #1a3a28;
+  }
+  .callout-tip strong { color: var(--green); }
+
+  /* ── Transport section ── */
+  .transport-item {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.92rem;
+  }
+  .transport-item:last-child { border-bottom: none; }
+  .transport-item strong { color: var(--ink); display: block; margin-bottom: 0.15rem; }
+  .transport-item span { color: var(--muted); font-size: 0.85rem; }
+
+  /* ── Reminder banner ── */
+  .reminder {
+    background: #fff0f3;
+    border: 1px solid #f0b8c4;
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    font-size: 0.87rem;
+    color: #7a2035;
+    margin-bottom: 0.85rem;
+  }
+  .reminder ul { padding-left: 1.2rem; margin-top: 0.4rem; }
+  .reminder li { margin-bottom: 0.2rem; }
+
+  /* ── Tags ── */
+  .tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    margin-right: 0.25rem;
+    vertical-align: middle;
+  }
+  .tag-food { background: #fff0e0; color: #c06010; }
+  .tag-activity { background: #e8f4ff; color: #1060a0; }
+  .tag-shop { background: #f0e8ff; color: #6030a0; }
+  .tag-onsen { background: #ffe8f8; color: #a02070; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🗾 Japan Trip 2026</h1>
+  <div class="subtitle">April 18 – May 3 &nbsp;·&nbsp; Cairns → Tokyo Narita → Cairns</div>
+</header>
+
+<nav class="nav">
+  <a href="#flights">✈️ Flights</a>
+  <a href="#summary">📋 Overview</a>
+  <a href="#apr18">Apr 18</a>
+  <a href="#apr19">Apr 19</a>
+  <a href="#apr20">Apr 20</a>
+  <a href="#apr21">Apr 21</a>
+  <a href="#apr22">Apr 22</a>
+  <a href="#apr2325">Apr 23–25</a>
+  <a href="#apr26">Apr 26</a>
+  <a href="#apr27">Apr 27</a>
+  <a href="#apr28">Apr 28</a>
+  <a href="#apr29">Apr 29</a>
+  <a href="#apr30">Apr 30</a>
+  <a href="#may13">May 1–3</a>
+  <a href="#transport">🚅 Transport</a>
+</nav>
+
+<main>
+
+  <!-- ── Flights ── -->
+  <div class="section-title" id="flights">✈️ Flights</div>
+
+  <div class="card flight-card">
+    <div class="flight-header">
+      <div>
+        <div style="font-size:0.8rem;color:rgba(255,255,255,0.6);margin-bottom:0.2rem">Outbound</div>
+        <div style="font-size:1rem;font-weight:700">JQ 25 · Saturday 18 April</div>
+      </div>
+      <div class="flight-badge">Jetstar</div>
+    </div>
+    <div class="flight-route">
+      <span>CNS</span>
+      <span class="arrow">→</span>
+      <span>NRT</span>
+    </div>
+    <div class="flight-detail">Cairns → Tokyo Narita</div>
+    <div class="flight-times">
+      <div class="flight-time-block">
+        <div class="time">11:40</div>
+        <div class="label">Depart Cairns</div>
+      </div>
+      <div class="duration">~7.5 hrs</div>
+      <div class="flight-time-block">
+        <div class="time">18:05</div>
+        <div class="label">Arrive Narita</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card flight-card">
+    <div class="flight-header">
+      <div>
+        <div style="font-size:0.8rem;color:rgba(255,255,255,0.6);margin-bottom:0.2rem">Return</div>
+        <div style="font-size:1rem;font-weight:700">JQ 26 · Sunday 3 May</div>
+      </div>
+      <div class="flight-badge">Jetstar</div>
+    </div>
+    <div class="flight-route">
+      <span>NRT</span>
+      <span class="arrow">→</span>
+      <span>CNS</span>
+    </div>
+    <div class="flight-detail">Tokyo Narita → Cairns</div>
+    <div class="flight-times">
+      <div class="flight-time-block">
+        <div class="time">20:05</div>
+        <div class="label">Depart Narita</div>
+      </div>
+      <div class="duration">~7.5 hrs</div>
+      <div class="flight-time-block">
+        <div class="time">04:30</div>
+        <div class="label">Arrive Cairns (Mon 4)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="reminder">
+    <strong>Jetstar reminders:</strong>
+    <ul>
+      <li>Check-in opens 30 days before departure</li>
+      <li>Arrive Narita by <strong>17:05</strong> on May 3 (3 hrs before)</li>
+      <li>Confirm checked baggage allowance on your booking</li>
+    </ul>
+  </div>
+
+  <!-- ── Trip Summary ── -->
+  <div class="section-title" id="summary">📋 Trip Overview</div>
+
+  <div class="card">
+    <table class="stay-table">
+      <thead>
+        <tr>
+          <th>Dates</th>
+          <th>Location</th>
+          <th style="text-align:center">Nights</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="dates">Apr 18–20</td>
+          <td>
+            Kamakura
+            <div class="accom">海辺のBed&amp;Breakfast GOOD MORNING ZAIMOKUZA</div>
+          </td>
+          <td class="nights">2</td>
+        </tr>
+        <tr>
+          <td class="dates">Apr 20–22</td>
+          <td>
+            Niigata region
+            <div class="accom">Serina's parents' house (Tochio / Teradomari / Tokamachi)</div>
+          </td>
+          <td class="nights">2</td>
+        </tr>
+        <tr>
+          <td class="dates">Apr 23–25</td>
+          <td>
+            Murakami
+            <div class="accom">Taikanso Senaminoyu 汀鶴 瀬波温泉</div>
+          </td>
+          <td class="nights">3</td>
+        </tr>
+        <tr>
+          <td class="dates">Apr 26–28</td>
+          <td>
+            Nagaoka
+            <div class="accom">長岡グランドホテル (BBH Hotel Group)</div>
+          </td>
+          <td class="nights">2</td>
+        </tr>
+        <tr>
+          <td class="dates">Apr 29–May 1</td>
+          <td>
+            Niigata City
+            <div class="accom">Hotel Diasmont Niigata</div>
+          </td>
+          <td class="nights">2</td>
+        </tr>
+        <tr>
+          <td class="dates">May 2–3</td>
+          <td>
+            Tokyo
+            <div class="accom">Tōyoko Inn – Fuchu MinamiTama Station</div>
+          </td>
+          <td class="nights">2</td>
+        </tr>
+        <tr>
+          <td colspan="2"><strong>Total</strong></td>
+          <td class="nights">14</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Day by Day ── -->
+  <div class="section-title">📅 Day-by-Day</div>
+
+  <!-- Apr 18 -->
+  <div class="card day-card" id="apr18">
+    <div class="day-header">
+      <span class="day-date">Sat 18 Apr</span>
+      <span class="day-title">Arrival: Narita → Kamakura</span>
+    </div>
+    <ul class="day-items">
+      <li><span class="time-tag">11:40</span> Depart Cairns · JQ 25</li>
+      <li><span class="time-tag">18:05</span> Arrive Narita (NRT)</li>
+      <li>Clear customs / immigration / baggage (~1 hr)</li>
+      <li>
+        Narita Express options
+        <span class="note">18:56 → Kamakura 21:28 &nbsp;|&nbsp; 19:40 → Kamakura 22:06</span>
+      </li>
+      <li>
+        Check in: 海辺のBed&amp;Breakfast GOOD MORNING ZAIMOKUZA
+        <span class="note">Zaimokuza beachside B&amp;B, Kamakura</span>
+      </li>
+    </ul>
+    <div class="callout-tip callout">
+      <strong>Tip:</strong> Get a <strong>Suica or Pasmo IC card</strong> at Narita on arrival — essential for trains and convenience stores throughout the whole trip.
+    </div>
+  </div>
+
+  <!-- Apr 19 -->
+  <div class="card day-card" id="apr19">
+    <div class="day-header">
+      <span class="day-date">Sun 19 Apr</span>
+      <span class="day-title">Kamakura</span>
+    </div>
+    <ul class="day-items">
+      <li>Breakfast at GOOD MORNING ZAIMOKUZA</li>
+      <li>
+        <span class="tag tag-activity">sightseeing</span> <strong>Hase area</strong> — Daibutsu (Great Buddha, Kotoku-in)
+      </li>
+      <li>
+        <span class="tag tag-activity">workshop</span> <strong>Wagashi-making</strong> at 古民家の宿 鎌倉楽庵
+        <span class="note">Traditional machiya guesthouse / workshop</span>
+      </li>
+      <li><span class="tag tag-activity">shrine</span> <strong>Tsurugaoka Hachimangu</strong> — Kamakura's main shrine</li>
+      <li>
+        <span class="tag tag-food">food</span> <strong>Komachi-dori</strong> street
+        <span class="note">Tomoya's Daibutsu cake · Giraffa curry pan</span>
+      </li>
+      <li><span class="tag tag-food">café</span> Afternoon tea at <strong>Sukima Kamakura</strong></li>
+      <li><span class="tag tag-onsen">bath</span> <strong>Shimizu Yu</strong> — traditional public bathhouse (sento)</li>
+      <li><span class="tag tag-food">dinner</span> 鎌倉 海鮮びより — Kamakura Kaisen Biyori (seafood)</li>
+    </ul>
+  </div>
+
+  <!-- Apr 20 -->
+  <div class="card day-card" id="apr20">
+    <div class="day-header">
+      <span class="day-date">Mon 20 Apr</span>
+      <span class="day-title">Kamakura → Nagaoka</span>
+    </div>
+    <ul class="day-items">
+      <li>Breakfast at accommodation</li>
+      <li><span class="tag tag-food">food</span> Donuts at <strong>Betsubara Donuts</strong></li>
+      <li>
+        Travel: Kamakura → Echigo Yuzawa → Nagaoka City
+        <span class="note">Via Shinkansen — Echigo Yuzawa is a famous ski resort town; snow may still be visible in late April</span>
+      </li>
+      <li>Arrive at Serina's parents' house</li>
+      <li><span class="tag tag-food">dinner</span> 🎉 Okonomiyaki party!</li>
+    </ul>
+  </div>
+
+  <!-- Apr 21 -->
+  <div class="card day-card" id="apr21">
+    <div class="day-header">
+      <span class="day-date">Tue 21 Apr</span>
+      <span class="day-title">Teradomari</span>
+    </div>
+    <ul class="day-items">
+      <li>
+        <span class="tag tag-activity">aquarium</span> <strong>Teradomari Aquarium</strong>
+        <span class="note">Niigata Prefectural Teradomari Aquarium — one of Japan's oldest, Sea of Japan species</span>
+      </li>
+      <li><span class="tag tag-food">lunch</span> Bento lunch at the seaside park</li>
+      <li>
+        <span class="tag tag-activity">nature</span> 🌸 Cherry blossoms at <strong>Yukyuzan Park</strong>
+        <span class="note">桜 — late April is prime cherry blossom season in Niigata</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Apr 22 -->
+  <div class="card day-card" id="apr22">
+    <div class="day-header">
+      <span class="day-date">Wed 22 Apr</span>
+      <span class="day-title">Tokamachi</span>
+    </div>
+    <ul class="day-items">
+      <li>Visit <strong>Kawaji Elementary School</strong></li>
+      <li><span class="tag tag-food">lunch</span> Ramen at <strong>大将亭</strong></li>
+      <li><span class="tag tag-activity">sake</span> Miyako sake ten (都酒店)</li>
+      <li><span class="tag tag-food">sweets</span> アプリコット</li>
+      <li><span class="tag tag-food">dinner</span> Cook at home with mum</li>
+    </ul>
+  </div>
+
+  <!-- Apr 23–25 -->
+  <div class="card day-card" id="apr2325">
+    <div class="day-header">
+      <span class="day-date">Thu–Sat 23–25 Apr</span>
+      <span class="day-title">Murakami</span>
+    </div>
+    <ul class="day-items">
+      <li>
+        Check in: <strong>Taikanso Senaminoyu</strong>
+        <span class="note">汀鶴 瀬波温泉 — hot spring resort hotel, Senamiyu Onsen</span>
+      </li>
+      <li>
+        <span class="tag tag-activity">workshop</span> Chopstick-making at <strong>ウルシ・オータキ</strong>
+        <span class="note">Urushi Otaki lacquerware workshop</span>
+      </li>
+      <li>
+        <span class="tag tag-food">café</span> Matcha café at <strong>冨士美園 (Fujimien)</strong>
+        <span class="note">Traditional tea house</span>
+      </li>
+      <li>
+        <span class="tag tag-activity">sake</span> Sake tasting at <strong>Kikkawa</strong> brewery
+      </li>
+      <li>
+        <span class="tag tag-food">local</span> <strong>千年鮭きっかわ</strong> — Sennen Salmon Kikkawa
+        <span class="note">Famous Murakami salted salmon shop — salmon hanging from ceiling, a must-see!</span>
+      </li>
+      <li>April 25 — personal day</li>
+    </ul>
+    <div class="callout">
+      <strong>Murakami is famous for:</strong> sake, lacquerware, and <em>Murakami salmon</em> (千年鮭). Senamiyu is a coastal hot spring town with a lovely onsen culture.
+    </div>
+  </div>
+
+  <!-- Apr 26 -->
+  <div class="card day-card" id="apr26">
+    <div class="day-header">
+      <span class="day-date">Sun 26 Apr</span>
+      <span class="day-title">Sanjo → Nagaoka <em style="font-weight:400;font-size:0.85rem;color:var(--muted)"> · Matti joins</em></span>
+    </div>
+    <ul class="day-items">
+      <li>
+        <span class="tag tag-activity">workshop</span> <strong>三条鍛冶道場</strong> — Sanjo Kajidojo
+        <span class="note">Blacksmith / forging workshop — Sanjo is famous for metalworking and cutlery</span>
+      </li>
+      <li>
+        <span class="tag tag-activity">museum</span> <strong>燕市産業史料館</strong> — Tsubame Industrial Materials Museum
+        <span class="note">Tsubame city is famous for metalwork and Western-style cutlery manufacturing</span>
+      </li>
+      <li>
+        Check in: <strong>長岡グランドホテル</strong> (BBH Hotel Group), Nagaoka
+      </li>
+    </ul>
+  </div>
+
+  <!-- Apr 27 -->
+  <div class="card day-card" id="apr27">
+    <div class="day-header">
+      <span class="day-date">Mon 27 Apr</span>
+      <span class="day-title">Nagaoka</span>
+    </div>
+    <ul class="day-items">
+      <li>
+        <span class="tag tag-food">breakfast</span> <strong>Komeda's Coffee</strong>
+        <span class="note">Popular Japanese chain café — known for generous morning sets</span>
+      </li>
+      <li>Schools: 長高 (Nagaoka High School) · 豊田 · 関原</li>
+      <li><span class="tag tag-food">lunch</span> Shabuyo Nagaoka Kawasaki (shabu-shabu)</li>
+      <li><span class="tag tag-shop">shopping</span> LOPIA · IKEA</li>
+    </ul>
+  </div>
+
+  <!-- Apr 28 -->
+  <div class="card day-card" id="apr28">
+    <div class="day-header">
+      <span class="day-date">Tue 28 Apr</span>
+      <span class="day-title">Tochio / Nagaoka</span>
+    </div>
+    <ul class="day-items">
+      <li>Schools: 栃尾ひがし · 刈中</li>
+      <li><span class="tag tag-shop">shopping</span> とちおショッピングモール トッピィ (Tochio Mall Toppy)</li>
+      <li><span class="tag tag-shop">shopping</span> Seria · Mujirushi 無印良品 (Muji) · Shimamura</li>
+    </ul>
+  </div>
+
+  <!-- Apr 29 -->
+  <div class="card day-card" id="apr29">
+    <div class="day-header">
+      <span class="day-date">Wed 29 Apr</span>
+      <span class="day-title">Niigata City</span>
+    </div>
+    <ul class="day-items">
+      <li>
+        <span class="tag tag-activity">pick</span> 🍓 Strawberry picking at <strong>Shirone Grape Garden</strong>
+        <span class="note">白根 area, Minami Ward — season runs March–May</span>
+      </li>
+      <li>Check in: <strong>Hotel Diasmont Niigata</strong></li>
+      <li>
+        <span class="tag tag-activity">sake</span> Sake tasting at <strong>ぽんしゅ館</strong> (Ponshukan)
+        <span class="note">Inside Niigata Station — 93 Niigata sake varieties via coin-operated dispensers (~¥200/taste)</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Apr 30 -->
+  <div class="card day-card" id="apr30">
+    <div class="day-header">
+      <span class="day-date">Thu 30 Apr</span>
+      <span class="day-title">Niigata City</span>
+    </div>
+    <ul class="day-items">
+      <li><span class="tag tag-activity">aquarium</span> <strong>Marinepia Nihonkai</strong> (Niigata City Aquarium)</li>
+      <li>Visit <strong>Niigata University</strong> campus</li>
+      <li>🎤 Karaoke</li>
+      <li><span class="tag tag-shop">shopping</span> Three Coins (¥300 variety / homeware store)</li>
+    </ul>
+    <div class="callout">
+      <strong>Meal ideas in Niigata City:</strong><br>
+      BRISKSTAND新潟 · カフェと古道具 ハナモモ · 日和山五合目 · 石窯パン工房 サフラン 女池店 · 港すし · 原価ビストロチーズプラス 新潟
+    </div>
+  </div>
+
+  <!-- May 1–3 -->
+  <div class="card day-card" id="may13">
+    <div class="day-header">
+      <span class="day-date">Fri 1 May</span>
+      <span class="day-title">Niigata → Tokyo</span>
+    </div>
+    <ul class="day-items">
+      <li>
+        Travel: Niigata → Tokyo by <strong>Joetsu Shinkansen</strong>
+        <span class="note">~2 hours</span>
+      </li>
+      <li>
+        Check in: <strong>Tōyoko Inn – Fuchu MinamiTama Station</strong>
+        <span class="note">Fuchu is in western Tokyo (~30 min from Shinjuku by Keio Line) — quieter and more residential</span>
+      </li>
+      <li>Visit sister's family</li>
+    </ul>
+  </div>
+
+  <div class="card day-card">
+    <div class="day-header">
+      <span class="day-date">Sat 2 May</span>
+      <span class="day-title">Tokyo</span>
+    </div>
+    <ul class="day-items">
+      <li>Time with family in Tokyo</li>
+    </ul>
+  </div>
+
+  <div class="card day-card">
+    <div class="day-header">
+      <span class="day-date">Sun 3 May</span>
+      <span class="day-title">Tokyo → Departure</span>
+    </div>
+    <ul class="day-items">
+      <li>Free morning / time with family</li>
+      <li>
+        <span class="time-tag">~15:30–16:00</span> Depart for Narita
+        <span class="note">Narita Express from Tokyo Station — ~60 min</span>
+      </li>
+      <li><span class="time-tag">17:05</span> Arrive Narita — check in for JQ 26</li>
+      <li><span class="time-tag">20:05</span> Depart Narita on JQ 26</li>
+      <li style="color:var(--muted);font-size:0.85rem">Arrive Cairns 04:30 Monday 4 May</li>
+    </ul>
+  </div>
+
+  <!-- ── Transport Notes ── -->
+  <div class="section-title" id="transport">🚅 Transport Notes</div>
+
+  <div class="card">
+    <div class="transport-item">
+      <strong>IC Card (Suica / Pasmo)</strong>
+      <span>Get one at Narita on arrival. Works on almost all trains, buses, and at convenience stores nationwide.</span>
+    </div>
+    <div class="transport-item">
+      <strong>Shinkansen Route</strong>
+      <span>Kamakura → Tokyo (Yokosuka Line) → Echigo Yuzawa / Nagaoka (Joetsu Shinkansen) → Niigata → Tokyo (Joetsu Shinkansen)</span>
+    </div>
+    <div class="transport-item">
+      <strong>Book Shinkansen seats in advance ⚠️</strong>
+      <span>Late April / early May is Japan's <strong>Golden Week</strong> — the busiest domestic travel period of the year. Trains sell out.</span>
+    </div>
+    <div class="transport-item">
+      <strong>JR Pass</strong>
+      <span>Consider whether the cost is worth it based on total Shinkansen use — Narita→Kamakura + Tokyo↔Niigata (×2) + Tokyo→Narita may make it worthwhile.</span>
+    </div>
+  </div>
+
+  <p style="text-align:center;color:var(--muted);font-size:0.75rem;margin-top:2rem">🌸 Japan Trip 2026 · Generated from ITINERARY.md</p>
+
+</main>
+</body>
+</html>
